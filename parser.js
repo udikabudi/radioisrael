@@ -1,0 +1,99 @@
+var ADD_NEW_ARTIST = "addArtist";
+var ADD_NEW_SONG = "addSong";
+var GET_SONG_LIST_B_GENRE = "getSongList";
+var GET_ARTIST_SONGS = "getArtistsSong";
+
+var dbHelper = require("./dbHelper");
+var parse = function (method, data, callback)
+{
+    if (method == "get")
+    {
+         console.log("data is " + data);
+           //convert string to json
+          //var dataJson = JSON.parse(data);
+          var requestHeader = data.header;
+          console.log("header is " + requestHeader);
+          var jsonResponseData = {};
+          switch (requestHeader)
+          {
+              case GET_SONG_LIST_B_GENRE:
+                  jsonResponseData.header = "getSongList";
+                     dbHelper.getSongsByGenre(data.gener, function(err, songs){
+                         if (err){
+                             jsonResponseData.ok = 0;
+                         }
+                         else
+                         {
+                              jsonResponseData.ok = 1;
+                               jsonResponseData.songs = songs;
+                         }
+                         callback(jsonResponseData);
+                       
+                     }) ;
+                       break;
+                       
+              case GET_ARTIST_SONGS:
+                   jsonResponseData.header = "getArtistsSong";
+                   dbHelper.getSongsOfArtist(data.artist, function(err, songs){
+                       if (err){
+                           jsonResponseData.ok = 0;
+                       }
+                       else {
+                           jsonResponseData.ok = 1;
+                           jsonResponseData.songs = songs;
+                       }
+                        callback(jsonResponseData);
+                   });
+                   break;
+                           
+              default:
+                jsonResponseData.ok = 0;
+                callback(jsonResponseData);
+                break;
+                       
+                  
+          }
+    }
+    else { //POST
+        console.log("data is " + data);
+           //convert string to json
+          //var dataJson = JSON.parse(data);
+          var requestHeaderPost = data.header;
+          console.log("header is " + requestHeaderPost);
+          var jsonResponseDataPost = {};
+          switch (requestHeaderPost){
+              case ADD_NEW_SONG:
+                  jsonResponseDataPost.header = ADD_NEW_SONG;
+                  dbHelper.saveNewSong(data.name, data.genre, data.artist, data.imgUrl, function(err, song){
+                      if (err){
+                          jsonResponseDataPost.ok = 0;
+                      }
+                      else {
+                          jsonResponseDataPost.ok = 1;
+                          jsonResponseDataPost.song = song;
+                      }
+                      callback(jsonResponseDataPost);
+                  });
+                  break;
+              case ADD_NEW_ARTIST:
+                   jsonResponseDataPost.header = ADD_NEW_ARTIST;
+                   dbHelper.saveNewArtist(data.name, data.imgUrl, function(err, artist){
+                       if (err){
+                           jsonResponseDataPost.ok = 0;
+                       }
+                       else {
+                           jsonResponseDataPost.ok = 1;
+                           jsonResponseDataPost.artist = artist;
+                       }
+                       callback(jsonResponseDataPost);
+                   });
+                      
+          }
+        
+    }
+    
+};
+
+module.exports.parse = parse;
+   
+  
