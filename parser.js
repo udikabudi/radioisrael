@@ -68,10 +68,10 @@ var parse = function (method, data, callback)
                   jsonResponseDataPost.header = ADD_NEW_SONG;
                   dbHelper.saveNewSong(data.name, data.genre, data.artist, data.imgUrl, function(err, song){
                       if (err){
-                          jsonResponseDataPost.ok = 0;
+                          jsonResponseDataPost.ok = "0";
                       }
                       else {
-                          jsonResponseDataPost.ok = 1;
+                          jsonResponseDataPost.ok = "1";
                           jsonResponseDataPost.song = song;
                       }
                       callback(jsonResponseDataPost);
@@ -81,10 +81,10 @@ var parse = function (method, data, callback)
                    jsonResponseDataPost.header = ADD_NEW_ARTIST;
                    dbHelper.saveNewArtist(data.name, data.imgUrl, function(err, artist){
                        if (err){
-                           jsonResponseDataPost.ok = 0;
+                           jsonResponseDataPost.ok = "0";
                        }
                        else {
-                           jsonResponseDataPost.ok = 1;
+                           jsonResponseDataPost.ok = "1";
                            jsonResponseDataPost.artist = artist;
                        }
                        callback(jsonResponseDataPost);
