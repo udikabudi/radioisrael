@@ -71,7 +71,38 @@ exports.getSongsOfArtist = function(artist, callback){
     
 };
 
-exports.saveNewSong = function(name, genre, artist, imgUrl, callback)
+var songsNotSavedFlag;
+
+exports.saveListOfSongs = function(songs, callback)
+{
+     songsNotSavedFlag = 0;
+     for (var i = 0; i < songs.length; ++i) {
+         console.log("dbHelper", "array object " + artists[i].name);
+         //find the artist
+        saveNewSong(songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, callbackToAddSongArray);
+    }
+    
+    if (songsNotSavedFlag !== 0)
+    {
+        callback(songsNotSavedFlag, true); //error accurd
+    }
+    else 
+    {
+        callback(songsNotSavedFlag, false);
+    }
+     
+};
+
+var callbackToAddSongArray = function  (question, err){
+            if (err)
+            {
+                console.log("totoDbHelper", "question couldn't save to db " + err + question);
+                songsNotSavedFlag++;
+            }
+};
+ 
+
+var saveNewSong = function(name, genre, artist, imgUrl, callback)
 {
     //find the artist id
     artists.findOne({'name': artist}).exec(function(err, artist){
@@ -105,7 +136,40 @@ exports.saveNewSong = function(name, genre, artist, imgUrl, callback)
     });
 };
 
-exports.saveNewArtist = function(_name, _imgUrl, callback)
+module.exports.saveNewSong = saveNewSong;
+
+var artistNotSavedFlag;
+
+exports.saveListOfArtists = function (artists, callback)
+{
+     artistNotSavedFlag = 0;
+     for (var i = 0; i < artists.length; ++i) {
+         console.log("dbHelper", "array object " + artists[i].name);
+        saveNewArtist(artists[i].name, artists[i].imgUrl, callbackToAddArtistArray);
+    }
+    
+    if (artistNotSavedFlag !== 0)
+    {
+        callback(artistNotSavedFlag, true); //error accurd
+    }
+    else 
+    {
+        callback(artistNotSavedFlag, false);
+    }
+     
+     
+};
+
+var callbackToAddArtistArray = function  (question, err){
+            if (err)
+            {
+                console.log("totoDbHelper", "question couldn't save to db " + err + question);
+                artistNotSavedFlag++;
+            }
+};
+ 
+
+var saveNewArtist = function(_name, _imgUrl, callback)
 {
     var artist = new artists({name: _name, imgUrl: _imgUrl});
     artist.save(function(err, artist){
