@@ -173,7 +173,7 @@ var callbackToAddArtistArray = function  (question, err){
 
 var saveNewArtist = function(_name, _imgUrl, callback)
 {
-    var artist = new artists({name: _name, imgUrl: _imgUrl});
+    var artist = new artists({name: _name, imageUrl: _imgUrl});
     artist.save(function(err, artist){
         if (err){
             callback(err,-1);
