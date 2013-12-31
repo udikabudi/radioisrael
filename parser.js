@@ -121,6 +121,11 @@ var parse = function (method, data, callback)
                            callback(jsonResponseDataPost);
                       }
                   });
+                  break;
+            default:
+                jsonResponseDataPost.ok = "0";
+                callback(jsonResponseDataPost);
+                      
           }
         
     }
