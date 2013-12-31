@@ -29,6 +29,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
  
  var songsSchema = mongoose.Schema ({
    // userId: {type: Number, required: true }, //check if unique
+    link: {type:String, require:true},
     name: {type: String, required: true},
     genre: {type: String, required: true},
     imgUrl: {type: String, requird: true},
@@ -79,7 +80,7 @@ exports.saveListOfSongs = function(songs, callback)
      for (var i = 0; i < songs.length; ++i) {
          console.log("dbHelper", "array object " + artists[i].name);
          //find the artist
-        saveNewSong(songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, callbackToAddSongArray);
+        saveNewSong(songs[i].link, songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, callbackToAddSongArray);
     }
     
     if (songsNotSavedFlag !== 0)
@@ -102,7 +103,7 @@ var callbackToAddSongArray = function  (question, err){
 };
  
 
-var saveNewSong = function(name, genre, artist, imgUrl, callback)
+var saveNewSong = function(link, name, genre, artist, imgUrl, callback)
 {
     //find the artist id
     artists.findOne({'name': artist}).exec(function(err, artist){
@@ -114,7 +115,7 @@ var saveNewSong = function(name, genre, artist, imgUrl, callback)
        {
            //save the song
            //user = new users({userName:name, userEmail:email, userPass:pass, tournaments:tournamentsIds, isVerify:false } );
-           var song = new songs({name: name, genre: genre, artist: artist._id, imgUrl: imgUrl});
+           var song = new songs({link: link, name: name, genre: genre, artist: artist._id, imgUrl: imgUrl});
            song.save(function (err, song){
                if (err){
                    callback(err, -1);

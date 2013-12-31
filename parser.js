@@ -20,14 +20,14 @@ var parse = function (method, data, callback)
           {
               case GET_SONG_LIST_B_GENRE:
                   jsonResponseData.header = "getSongList";
-                     dbHelper.getSongsByGenre(data.gener, function(err, songs){
+                     dbHelper.getSongsByGenre(data.genre, function(err, songs){
                          if (err){
                              jsonResponseData.ok = 0;
                          }
                          else
                          {
                               jsonResponseData.ok = 1;
-                               jsonResponseData.songs = songs;
+                              jsonResponseData.songs = songs;
                          }
                          callback(jsonResponseData);
                        
