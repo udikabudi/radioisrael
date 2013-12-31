@@ -22,11 +22,11 @@ var parse = function (method, data, callback)
                   jsonResponseData.header = "getSongList";
                      dbHelper.getSongsByGenre(data.genre, function(err, songs){
                          if (err){
-                             jsonResponseData.ok = 0;
+                             jsonResponseData.ok = "0";
                          }
                          else
                          {
-                              jsonResponseData.ok = 1;
+                              jsonResponseData.ok = "1";
                               jsonResponseData.songs = songs;
                          }
                          callback(jsonResponseData);
@@ -38,10 +38,10 @@ var parse = function (method, data, callback)
                    jsonResponseData.header = "getArtistsSong";
                    dbHelper.getSongsOfArtist(data.artist, function(err, songs){
                        if (err){
-                           jsonResponseData.ok = 0;
+                           jsonResponseData.ok = "0";
                        }
                        else {
-                           jsonResponseData.ok = 1;
+                           jsonResponseData.ok = "1";
                            jsonResponseData.songs = songs;
                        }
                         callback(jsonResponseData);
@@ -49,7 +49,7 @@ var parse = function (method, data, callback)
                    break;
                            
               default:
-                jsonResponseData.ok = 0;
+                jsonResponseData.ok = "0";
                 callback(jsonResponseData);
                 break;
                        
@@ -107,6 +107,7 @@ var parse = function (method, data, callback)
                    break;
                    
              case ADD_SONG_LIST:
+                 console.log("add song list parser");
                   jsonResponseDataPost.header = ADD_SONG_LIST;
                   var songArray =  JSON.parse(data.songs);
                   dbHelper.saveListOfSongs(songArray, function(numOfSongsNotSaved, err){

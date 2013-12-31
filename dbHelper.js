@@ -76,6 +76,7 @@ var songsNotSavedFlag;
 
 exports.saveListOfSongs = function(songs, callback)
 {
+    console.log("save songs list db");
      songsNotSavedFlag = 0;
      for (var i = 0; i < songs.length; ++i) {
          console.log("dbHelper", "array object " + artists[i].name);
@@ -105,23 +106,29 @@ var callbackToAddSongArray = function  (question, err){
 
 var saveNewSong = function(link, name, genre, artist, imgUrl, callback)
 {
+    console.log("save new song db");
     //find the artist id
     artists.findOne({'name': artist}).exec(function(err, artist){
        if (err)
        {
+           console.log("artist not found saveNewSong");
            callback(err, -1);
+            
        }
        else
        {
+           console.log("artist found saveNewSong");
            //save the song
            //user = new users({userName:name, userEmail:email, userPass:pass, tournaments:tournamentsIds, isVerify:false } );
            var song = new songs({link: link, name: name, genre: genre, artist: artist._id, imgUrl: imgUrl});
            song.save(function (err, song){
                if (err){
+                   console.log("song couldnt saved saveNewSong");
                    callback(err, -1);
                }
                else
                {
+                    console.log("song saved ,saveNewSong db");
                     //update the artist's song list
                     artists.update({name: artist}, {$addToSet:{songs: song._id}}, {upsert:true},function(err, artist){
                         if (err){
