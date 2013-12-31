@@ -138,6 +138,7 @@ var saveNewSong = function(link, name, genre, artist, imgUrl, callback)
 };
 
 module.exports.saveNewSong = saveNewSong;
+module.exports.connectToDb = connectToDb;
 
 var artistNotSavedFlag;
 
