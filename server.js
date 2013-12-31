@@ -77,6 +77,13 @@ my_http.createServer(function(request,response){
              else
              {
                   console.log("request undefined");
+                   response.writeHead(
+                    200,
+                    {
+                        "access-control-allow-origin": origin,
+                        "content-type": "text/plain",
+                    }
+                );
                   response.write("request undefined");
                   response.end();
              }
