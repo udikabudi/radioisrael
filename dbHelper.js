@@ -33,7 +33,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
     name: {type: String, required: true},
     genre: {type: String, required: true},
     imgUrl: {type: String, requird: true},
-    //user tournaments
+ 
     artist: {type: mongoose.Schema.Types.ObjectId, ref:'artists'},
 });
 
@@ -95,10 +95,10 @@ exports.saveListOfSongs = function(songs, callback)
      
 };
 
-var callbackToAddSongArray = function  (question, err){
+var callbackToAddSongArray = function  (err, song){
             if (err)
             {
-                console.log("totoDbHelper", "question couldn't save to db " + err + question);
+                console.log("totoDbHelper", "question couldn't save to db " + err + song);
                 songsNotSavedFlag++;
             }
 };
@@ -169,7 +169,7 @@ exports.saveListOfArtists = function (artists, callback)
      
 };
 
-var callbackToAddArtistArray = function  (question, err){
+var callbackToAddArtistArray = function  (err, question){
             if (err)
             {
                 console.log("totoDbHelper", "question couldn't save to db " + err + question);
