@@ -89,6 +89,7 @@ var parse = function (method, data, callback)
                        }
                        callback(jsonResponseDataPost);
                    });
+                   break;
                    
               case ADD_ARTIST_LIST:
                   jsonResponseDataPost.header = ADD_ARTIST_LIST;
@@ -125,7 +126,7 @@ var parse = function (method, data, callback)
             default:
                 jsonResponseDataPost.ok = "0";
                 callback(jsonResponseDataPost);
-                      
+                break;
           }
         
     }
