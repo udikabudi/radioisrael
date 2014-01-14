@@ -33,8 +33,10 @@ db.on('error', console.error.bind(console, 'connection error:'));
     name: {type: String, required: true},
     genre: {type: String, required: true},
     imgUrl: {type: String, requird: true},
- 
     artist: {type: mongoose.Schema.Types.ObjectId, ref:'artists'},
+    //more info TODO
+    //like
+    //unlike
 });
 
 var songs  = mongoose.model('songs', songsSchema);
@@ -42,11 +44,14 @@ var songs  = mongoose.model('songs', songsSchema);
 var artistsSchema = mongoose.Schema({
     name: {type:String, required: true},
     imageUrl: {type:String, required:true},
+    //like
+    //unlike
     songs: [{type: mongoose.Schema.Types.ObjectId, ref:'songs'}]
 });
 
 var artists = mongoose.model('artists', artistsSchema);
 
+//station schema
 
 exports.getSongsByGenre = function (_genre, callback){
     songs.find({'genre':_genre}, function (err, songs){
