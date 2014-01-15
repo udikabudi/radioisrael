@@ -48,7 +48,7 @@ my_http.createServer(function(request,response){
     console.log("called to my server");
     
     var origin = (request.headers.origin || "*");
-  
+  console.log("origin is - " + origin);
          
   if(request.method == 'POST') 
   {
