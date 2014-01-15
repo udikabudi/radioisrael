@@ -102,7 +102,7 @@ exports.saveListOfSongs = function(songs, callback)
      for (var i = 0; i < songs.length; ++i) {
          console.log("dbHelper", "array object " + songs[i].name);
          //find the artist
-        saveNewSong(songs[i].link, songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, callbackToAddSongArray);
+        saveNewSong(songs[i].link, songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, songs[i].like, callbackToAddSongArray);
     }
     
     if (songsNotSavedFlag !== 0)
@@ -125,7 +125,7 @@ var callbackToAddSongArray = function  (err, song){
 };
  
 
-var saveNewSong = function(link, name, genre, artist, imgUrl, callback)
+var saveNewSong = function(link, name, genre, artist, imgUrl,likes, callback)
 {
     console.log("save new song db");
     //find the artist id
@@ -141,7 +141,7 @@ var saveNewSong = function(link, name, genre, artist, imgUrl, callback)
            console.log("artist found saveNewSong");
            //save the song
            //user = new users({userName:name, userEmail:email, userPass:pass, tournaments:tournamentsIds, isVerify:false } );
-           var song = new songs({link: link, name: name, genre: genre, artist: artist._id, imgUrl: imgUrl});
+           var song = new songs({link: link, name: name, genre: genre, artist: artist._id, imgUrl: imgUrl, like: likes});
            song.save(function (err, song){
                if (err){
                    console.log("song couldnt saved saveNewSong");
@@ -193,7 +193,7 @@ exports.saveListOfArtists = function (artists, callback)
 var callbackToAddArtistArray = function  (err, question){
             if (err)
             {
-                console.log("totoDbHelper", "question couldn't save to db " + err + question);
+                //console.log("totoDbHelper", "question couldn't save to db " + err + question);
                 artistNotSavedFlag++;
             }
 };
@@ -245,6 +245,63 @@ exports.getTopArtists = function (callback)
         });
 };
  
+exports.likeSong = function (songName, callback)
+{
+    
+//     var query = { name: 'borne' };
+// Model.findOneAndUpdate(query, { name: 'jason borne' }, options, callback)
+
+  songs.findOne({'name': songName}).exec(function(err, song){
+      if (err){
+          callback(err,-1);
+      }
+      else {
+          var likes = song.like;
+          likes++;
+          //    artists.update({name: artist}, {$addToSet:{songs: song._id}}, {upsert:true},function(err, artist){
+          songs.update({name:songName},{like:likes},function(err, numberAffected, raw){
+              if (err){
+                  console.log("dbHelper, likeSong, Error updating song " + err);
+                  callback(err, -1);
+              }
+              else {
+                  console.log("dbHelper, likeSong, succeeded updating song");
+                  callback(err,numberAffected);
+              }
+          });
+      }
+      });
+};
+
+
+exports.likeArtist = function (artistName, callback)
+{
+    
+//     var query = { name: 'borne' };
+// Model.findOneAndUpdate(query, { name: 'jason borne' }, options, callback)
+
+  artists.findOne({'name': artistName}).exec(function(err, artist){
+      if (err){
+          callback(err,-1);
+      }
+      else {
+          var likes = artist.like;
+          likes++;
+          //    artists.update({name: artist}, {$addToSet:{songs: song._id}}, {upsert:true},function(err, artist){
+          artists.update({name:artistName},{like:likes},function(err, numberAffected, raw){
+              if (err){
+                  console.log("dbHelper, likeSong, Error updating song " + err);
+                  callback(err, -1);
+              }
+              else {
+                  console.log("dbHelper, likeSong, succeeded updating song");
+                  callback(err,numberAffected);
+              }
+          });
+      }
+      });
+};
+
  
  
  

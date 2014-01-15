@@ -6,6 +6,9 @@ var ADD_ARTIST_LIST = "saveAList";
 var ADD_SONG_LIST = "saveSongList";
 var GET_ARTISTS_WELCOME_PAGE = "getTopArtists";
 var GET_SONGS_WELCOME_PAGE = "getTopSongs";
+var LIKE_SONG = "likeSong";
+var LIKE_ARTIST = "likeArtist";
+
 
 var dbHelper = require("./dbHelper");
 var parse = function (method, data, callback)
@@ -160,6 +163,32 @@ var parse = function (method, data, callback)
                      callback(jsonResponseDataPost);
                  });
                  break;
+                 
+                 case LIKE_SONG:
+                       jsonResponseDataPost.header = LIKE_SONG;
+                       dbHelper.likeSong(data.name, function(err, rawsNum){
+                          if (err) {
+                              jsonResponseDataPost.ok="0";
+                          }
+                          else {
+                              jsonResponseDataPost.ok="1";
+                          }
+                          callback(jsonResponseDataPost);
+                       });
+                     break;
+                     
+               case LIKE_ARTIST:
+                       jsonResponseDataPost.header = LIKE_ARTIST;
+                       dbHelper.likeArtist(data.name, function(err, rawsNum){
+                          if (err) {
+                              jsonResponseDataPost.ok="0";
+                          }
+                          else {
+                              jsonResponseDataPost.ok="1";
+                          }
+                          callback(jsonResponseDataPost);
+                       });
+                     break;
             default:
                 jsonResponseDataPost.ok = "0";
                 callback(jsonResponseDataPost);
