@@ -33,8 +33,10 @@ db.on('error', console.error.bind(console, 'connection error:'));
     name: {type: String, required: true},
     genre: {type: String, required: true},
     imgUrl: {type: String, requird: true},
- 
     artist: {type: mongoose.Schema.Types.ObjectId, ref:'artists'},
+    //more info TODO
+    //like
+    //unlike
 });
 
 var songs  = mongoose.model('songs', songsSchema);
@@ -42,11 +44,14 @@ var songs  = mongoose.model('songs', songsSchema);
 var artistsSchema = mongoose.Schema({
     name: {type:String, required: true},
     imageUrl: {type:String, required:true},
+    //like
+    //unlike
     songs: [{type: mongoose.Schema.Types.ObjectId, ref:'songs'}]
 });
 
 var artists = mongoose.model('artists', artistsSchema);
 
+//station schema
 
 exports.getSongsByGenre = function (_genre, callback){
     songs.find({'genre':_genre}, function (err, songs){
@@ -79,7 +84,7 @@ exports.saveListOfSongs = function(songs, callback)
     console.log("save songs list db");
      songsNotSavedFlag = 0;
      for (var i = 0; i < songs.length; ++i) {
-         console.log("dbHelper", "array object " + artists[i].name);
+         console.log("dbHelper", "array object " + songs[i].name);
          //find the artist
         saveNewSong(songs[i].link, songs[i].name, songs[i].genre, songs[i].artist, songs[i].imgUrl, callbackToAddSongArray);
     }
