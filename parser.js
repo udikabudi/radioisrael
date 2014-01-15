@@ -222,7 +222,7 @@ var parse = function (method, data, callback)
                    break;
                    case SEARCH_ARTISTS:
                        jsonResponseDataPost.header = SEARCH_ARTISTS;
-                       dbHelper.searchArtists(data.searchQuery, function (err, artistsNames){
+                       dbHelper.searchArtist(data.searchQuery, function (err, artistsNames){
                           if (err || artistsNames == -1) {
                               jsonResponseDataPost.ok="0";
                               jsonResponseDataPost.names="-1";
