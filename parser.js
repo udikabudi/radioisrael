@@ -4,6 +4,8 @@ var GET_SONG_LIST_B_GENRE = "getSongList";
 var GET_ARTIST_SONGS = "getArtistsSong";
 var ADD_ARTIST_LIST = "saveAList";
 var ADD_SONG_LIST = "saveSongList";
+var GET_ARTISTS_WELCOME_PAGE = "getTopArtists";
+var GET_SONGS_WELCOME_PAGE = "getTopSongs";
 
 var dbHelper = require("./dbHelper");
 var parse = function (method, data, callback)
@@ -47,6 +49,38 @@ var parse = function (method, data, callback)
                         callback(jsonResponseData);
                    });
                    break;
+                   
+              case GET_ARTISTS_WELCOME_PAGE:
+                  jsonResponseData.header = "getTopArtists";
+                 dbHelper.getTopArtists(function(err, artists){
+                    if (err) 
+                    {
+                        jsonResponseData.ok = "0";
+                    }
+                    else 
+                    {
+                        jsonResponseData.ok = "1";
+                        jsonResponseData.artists = artists;
+                    }
+                     callback(jsonResponseData);
+                 });
+                   break;
+              
+              case GET_SONGS_WELCOME_PAGE:
+                 jsonResponseData.header = "getTopSongs";
+                 dbHelper.getTopSongs(function(err, songs){
+                    if (err) 
+                    {
+                        jsonResponseData.ok = "0";
+                    }
+                    else 
+                    {
+                        jsonResponseData.ok = "1";
+                        jsonResponseData.songs = songs;
+                    }
+                     callback(jsonResponseData);
+                 });
+                 break;
                            
               default:
                 jsonResponseData.ok = "0";

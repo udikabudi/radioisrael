@@ -36,7 +36,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
     artist: {type: mongoose.Schema.Types.ObjectId, ref:'artists'},
     //more info TODO
     //like
+    like: {type: Number},
     //unlike
+    unlike: {type: Number}
 });
 
 var songs  = mongoose.model('songs', songsSchema);
@@ -44,14 +46,28 @@ var songs  = mongoose.model('songs', songsSchema);
 var artistsSchema = mongoose.Schema({
     name: {type:String, required: true},
     imageUrl: {type:String, required:true},
-    //like
+     //like
+    like: {type: Number},
     //unlike
+    unlike: {type: Number},
     songs: [{type: mongoose.Schema.Types.ObjectId, ref:'songs'}]
 });
 
 var artists = mongoose.model('artists', artistsSchema);
 
 //station schema
+var stationSchema = mongoose.Schema({
+    name: {type:String, required: true},
+    imageUrl: {type:String, required:true},
+     //like
+    like: {type: Number},
+    //unlike
+    unlike: {type: Number},
+    artist: {type: mongoose.Schema.Types.ObjectId, ref:'artists'},
+    songs: [{type: mongoose.Schema.Types.ObjectId, ref:'songs'}]
+});
+
+var stations = mongoose.model('stations', stationSchema);
 
 exports.getSongsByGenre = function (_genre, callback){
     songs.find({'genre':_genre}, function (err, songs){
@@ -194,6 +210,39 @@ var saveNewArtist = function(_name, _imgUrl, callback)
             callback(err,artist);
         }
     });
+};
+
+exports.getTopSongs = function (callback)
+{
+    songs.find().sort({like: -1}).limit(4).exec( 
+    function(err, songs) {
+        if (err)
+        {
+             console.log("dbHelper, getTopSongs - error getting top songs");
+             callback(err, -1);
+        }
+        else {
+            console.log("dbHelper, getTopSongs, top songs are - " + songs);     
+            callback(err, songs);
+        }
+       
+    }
+);
+};
+
+exports.getTopArtists = function (callback)
+{
+    artists.find().sort({like: -1}).limit(4).exec (
+        function(err,artists){
+           if (err){
+               console.log("dbHelper, getTopArtists - error getting top artists");
+               callback(err, -1);
+           } 
+           else {
+               console.log("dbHelper, getTopArtists, top artists are - " + artists);     
+               callback(err, artists);
+           }
+        });
 };
  
  
