@@ -302,6 +302,19 @@ exports.likeArtist = function (artistName, callback)
       });
 };
 
+exports.searchArtist = function(searchQuery, callback){
+    artists.find({'name' : new RegExp(searchQuery, '^')},'name', function(err, artistsNames){
+    if (err){
+        console.log("dbHelper, searchArtist, error has accurd while searching artists - " + err);
+        callback(err, -1);
+    }
+    else {
+        console.log("deHelperm serachArtists, search succeeded. Artists are - " + artistsNames);
+        callback(err,artistsNames);
+    }
+});
+};
+
  
  
  

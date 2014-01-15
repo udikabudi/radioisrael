@@ -1,13 +1,14 @@
 var ADD_NEW_ARTIST = "addArtist";
 var ADD_NEW_SONG = "addSong";
 var GET_SONG_LIST_B_GENRE = "getSongList";
-var GET_ARTIST_SONGS = "getArtistsSong";
+var GET_ARTIST_SONGS = "getArtistsSongs";
 var ADD_ARTIST_LIST = "saveAList";
 var ADD_SONG_LIST = "saveSongList";
 var GET_ARTISTS_WELCOME_PAGE = "getTopArtists";
 var GET_SONGS_WELCOME_PAGE = "getTopSongs";
 var LIKE_SONG = "likeSong";
 var LIKE_ARTIST = "likeArtist";
+var SEARCH_ARTISTS = "searchArtists";
 
 
 var dbHelper = require("./dbHelper");
@@ -40,7 +41,7 @@ var parse = function (method, data, callback)
                        break;
                        
               case GET_ARTIST_SONGS:
-                   jsonResponseData.header = "getArtistsSong";
+                   jsonResponseData.header = GET_ARTIST_SONGS;
                    dbHelper.getSongsOfArtist(data.artist, function(err, songs){
                        if (err){
                            jsonResponseData.ok = "0";
@@ -73,7 +74,7 @@ var parse = function (method, data, callback)
           switch (requestHeaderPost){
               case ADD_NEW_SONG:
                   jsonResponseDataPost.header = ADD_NEW_SONG;
-                  dbHelper.saveNewSong(data.name, data.genre, data.artist, data.imgUrl, function(err, song){
+                  dbHelper.saveNewSong(data.name, data.genre, data.artist, data.imgUrl, data.likeNum, function(err, song){
                       if (err){
                           jsonResponseDataPost.ok = "0";
                       }
@@ -189,6 +190,50 @@ var parse = function (method, data, callback)
                           callback(jsonResponseDataPost);
                        });
                      break;
+                     
+                     case GET_SONG_LIST_B_GENRE:
+                  jsonResponseDataPost.header = "getSongList";
+                     dbHelper.getSongsByGenre(data.genre, function(err, songs){
+                         if (err){
+                             jsonResponseDataPost.ok = "0";
+                         }
+                         else
+                         {
+                              jsonResponseDataPost.ok = "1";
+                              jsonResponseDataPost.songs = songs;
+                         }
+                         callback(jsonResponseDataPost);
+                       
+                     }) ;
+                       break;
+                       
+              case GET_ARTIST_SONGS:
+                   jsonResponseDataPost.header = GET_ARTIST_SONGS;
+                   dbHelper.getSongsOfArtist(data.artist, function(err, songs){
+                       if (err){
+                           jsonResponseDataPost.ok = "0";
+                       }
+                       else {
+                           jsonResponseDataPost.ok = "1";
+                           jsonResponseDataPost.songs = songs;
+                       }
+                        callback(jsonResponseDataPost);
+                   });
+                   break;
+                   case SEARCH_ARTISTS:
+                       jsonResponseDataPost.header = SEARCH_ARTISTS;
+                       dbHelper.searchArtists(data.searchQuery, function (err, artistsNames){
+                          if (err || artistsNames == -1) {
+                              jsonResponseDataPost.ok="0";
+                              jsonResponseDataPost.names="-1";
+                          }
+                          else{
+                               jsonResponseDataPost.ok = "1";
+                              jsonResponseDataPost.names = artistsNames ;
+                          }
+                            callback(jsonResponseDataPost);
+                       });
+                       break;
             default:
                 jsonResponseDataPost.ok = "0";
                 callback(jsonResponseDataPost);
