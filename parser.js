@@ -50,37 +50,7 @@ var parse = function (method, data, callback)
                    });
                    break;
                    
-              case GET_ARTISTS_WELCOME_PAGE:
-                  jsonResponseData.header = "getTopArtists";
-                 dbHelper.getTopArtists(function(err, artists){
-                    if (err) 
-                    {
-                        jsonResponseData.ok = "0";
-                    }
-                    else 
-                    {
-                        jsonResponseData.ok = "1";
-                        jsonResponseData.artists = artists;
-                    }
-                     callback(jsonResponseData);
-                 });
-                   break;
-              
-              case GET_SONGS_WELCOME_PAGE:
-                 jsonResponseData.header = "getTopSongs";
-                 dbHelper.getTopSongs(function(err, songs){
-                    if (err) 
-                    {
-                        jsonResponseData.ok = "0";
-                    }
-                    else 
-                    {
-                        jsonResponseData.ok = "1";
-                        jsonResponseData.songs = songs;
-                    }
-                     callback(jsonResponseData);
-                 });
-                 break;
+            
                            
               default:
                 jsonResponseData.ok = "0";
@@ -157,6 +127,39 @@ var parse = function (method, data, callback)
                       }
                   });
                   break;
+                  
+                    case GET_ARTISTS_WELCOME_PAGE:
+                  jsonResponseDataPost.header = "getTopArtists";
+                   console.log("parser, getTopArtists");   
+                 dbHelper.getTopArtists(function(err, artists){
+                    if (err) 
+                    {
+                        jsonResponseDataPost.ok = "0";
+                    }
+                    else 
+                    {
+                        jsonResponseDataPost.ok = "1";
+                        jsonResponseDataPost.artists = artists;
+                    }
+                     callback(jsonResponseDataPost);
+                 });
+                   break;
+              
+              case GET_SONGS_WELCOME_PAGE:
+                 jsonResponseDataPost.header = "getTopSongs";
+                 dbHelper.getTopSongs(function(err, songs){
+                    if (err) 
+                    {
+                        jsonResponseDataPost.ok = "0";
+                    }
+                    else 
+                    {
+                        jsonResponseDataPost.ok = "1";
+                        jsonResponseDataPost.songs = songs;
+                    }
+                     callback(jsonResponseDataPost);
+                 });
+                 break;
             default:
                 jsonResponseDataPost.ok = "0";
                 callback(jsonResponseDataPost);
