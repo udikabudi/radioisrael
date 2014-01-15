@@ -305,7 +305,7 @@ exports.likeArtist = function (artistName, callback)
 exports.searchArtist = function(searchQuery, callback){
     // var querySearchArtists = artists.find({name : new RegExp(searchQuery)});
     // querySearchArtists.select('name');
-    artists.find({name : new RegExp(searchQuery)}, 'name').exec(function(err, artistsNames){
+    artists.find({name : new RegExp(searchQuery)}, {name:1}).exec(function(err, artistsNames){
     if (err){
         console.log("dbHelper, searchArtist, error has accurd while searching artists - " + err);
         callback(err, -1);
