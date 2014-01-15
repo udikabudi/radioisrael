@@ -303,7 +303,7 @@ exports.likeArtist = function (artistName, callback)
 };
 
 exports.searchArtist = function(searchQuery, callback){
-    var querySearchArtists = artists.find({'name' : new RegExp(searchQuery)});
+    var querySearchArtists = artists.find({name : new RegExp(searchQuery)});
     querySearchArtists.select('name');
     querySearchArtists.exec(function(err, artistsNames){
     if (err){
