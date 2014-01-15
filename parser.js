@@ -113,7 +113,7 @@ var parse = function (method, data, callback)
                   break;
               case ADD_NEW_ARTIST:
                    jsonResponseDataPost.header = ADD_NEW_ARTIST;
-                   dbHelper.saveNewArtist(data.name, data.imgUrl, function(err, artist){
+                   dbHelper.saveNewArtist(data.name, data.imgUrl,data.likeNum, function(err, artist){
                        if (err){
                            jsonResponseDataPost.ok = "0";
                        }

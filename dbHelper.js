@@ -175,7 +175,7 @@ exports.saveListOfArtists = function (artists, callback)
      artistNotSavedFlag = 0;
      for (var i = 0; i < artists.length; ++i) {
          console.log("dbHelper", "array object " + artists[i].name);
-        saveNewArtist(artists[i].name, artists[i].imgUrl, callbackToAddArtistArray);
+        saveNewArtist(artists[i].name, artists[i].imgUrl, artists[i].like, callbackToAddArtistArray);
     }
     
     if (artistNotSavedFlag !== 0)
@@ -199,9 +199,9 @@ var callbackToAddArtistArray = function  (err, question){
 };
  
 
-var saveNewArtist = function(_name, _imgUrl, callback)
+var saveNewArtist = function(_name, _imgUrl, likeNum, callback)
 {
-    var artist = new artists({name: _name, imageUrl: _imgUrl});
+    var artist = new artists({name: _name, imageUrl: _imgUrl, like: likeNum});
     artist.save(function(err, artist){
         if (err){
             callback(err,-1);
