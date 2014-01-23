@@ -75,6 +75,7 @@ exports.getSongsByGenre = function (_genre, callback){
           callback(err, -1) ;
        }
        else{
+           //populate artist
            callback(err, songs);
        }
     });
